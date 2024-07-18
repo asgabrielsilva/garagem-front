@@ -3,54 +3,55 @@ import { ref, reactive, onMounted } from "vue";
 import MarcasApi from "@/api/marcas";
 const marcasApi = new MarcasApi();
 
-const defaultMarca = { id: null, descricao: "" };
-const cores = ref([]);
-const cor = reactive({ ...defaultCor });
+const defaultMarca = { id: null, nome: "" };
+const marcas = ref([]);
+const marca = reactive({ ...defaultMarca });
 
 onMounted(async () => {
-  cores.value = await coresApi.buscarTodasAsCores();
+  marcas.value = await marcasApi.buscarTodasAsMarcas();
 });
 
 function limpar() {
-  Object.assign(cor, { ...defaultCor });
+  Object.assign(marca, { ...defaultMarca });
 }
 
 async function salvar() {
-  if (cor.id) {
-    await coresApi.atualizarCor(cor);
+  if (marca.id) {
+    await marcasApi.atualizarMarca(marca);
   } else {
-    await coresApi.adicionarCor(cor);
+    await marcasApi.adicionarMarca(marca);
   }
-  cores.value = await coresApi.buscarTodasAsCores();
+  marcas.value = await marcasApi.buscarTodasAsMarcas();
   limpar();
 }
 
-function editar(cor_para_editar) {
-  Object.assign(cor, cor_para_editar);
+function editar(marca_para_editar) {
+  Object.assign(marca, marca_para_editar);
 }
 
 async function excluir(id) {
-  await coresApi.excluirCor(id);
-  cores.value = await coresApi.buscarTodasAsCores();
+  await marcasApi.excluirMarca(id);
+  marcas.value = await marcasApi.buscarTodasAsMarcas();
   limpar();
 }
 </script>
 
 <template>
-  <h1>Cor</h1>
+  <h1>Marca</h1>
   <hr />
   <div class="form">
-    <input type="text" v-model="cor.descricao" placeholder="Descrição" />
+    <input type="text" v-model="marca.nome" placeholder="Nome" />
+    <input type="text" v-model="marca.nacionalidade" placeholder="Nacionalidade" />
     <button @click="salvar">Salvar</button>
     <button @click="limpar">Limpar</button>
   </div>
   <hr />
   <ul>
-    <li v-for="cor in cores" :key="cor.id">
-      <span @click="editar(cor)">
-        ({{ cor.id }}) - {{ cor.descricao }} -
+    <li v-for="marca in marcas" :key="marca.id">
+      <span @click="editar(marca)">
+        ({{ marca.id }}) - {{ marca.nome }} - 
       </span>
-      <button @click="excluir(cor.id)">X</button>
+      <button @click="excluir(marca.id)">X</button>
     </li>
   </ul>
 </template>
