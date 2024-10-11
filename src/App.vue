@@ -10,10 +10,7 @@ const authStore = useAuthStore();
 <template>
   <header>
     <router-link :to="{ name: 'home' }">Home</router-link> |
-    <router-link to="/acessorios">Acessorios</router-link> |
-    <router-link to="/categorias">Categorias</router-link> |
-    <router-link to="/cores">Cores</router-link> |
-    <router-link to="/marcas">Marcas</router-link> |
+    <router-link to="/loja">loja</router-link> |
     <div v-if="authStore.loggedIn">
     <router-link  to="/logout">Logout</router-link> |
       {{ authStore.user.email }}
